@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "Time Warp",
+  "version": "1.0.0",
+  "description": "Scrub through the history of any webpage with a beautiful timeline side panel, powered by the Wayback Machine.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "sidePanel",
+    "declarativeNetRequest",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://web.archive.org/*",
+    "https://archive.org/*",
+    "<all_urls>"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "content/sidepanel.html"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"]
+    }
+  ],
+  "commands": {
+    "open_side_panel": {
+      "suggested_key": {
+        "default": "Alt+W",
+        "mac": "Alt+W"
+      },
+      "description": "Open Time Warp Side Panel"
+    }
+  }
+}

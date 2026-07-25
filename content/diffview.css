@@ -1,0 +1,538 @@
+/* Difference Inspector Stylesheet (Apple Minimalist Light Theme) */
+
+:root {
+  --bg-color: #ffffff;
+  --header-bg: #ffffff;
+  --strip-bg: #f5f5f7;
+  --border-color: #e5e5ea;
+  --border-dark: #d2d2d7;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+  --accent-color: #0066cc;
+  
+  /* Diff colors */
+  --del-bg: #ffeef0;
+  --del-text: #d73a49;
+  --ins-bg: #e6ffed;
+  --ins-text: #22863a;
+  --empty-line-bg: #fafbfc;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.diff-layout-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Header bar */
+.diff-header {
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.diff-header h1 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.target-url-text {
+  font-size: 13px;
+  font-weight: 600;
+  background-color: var(--strip-bg);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: inline-block;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.snapshot-select {
+  background-color: #ffffff;
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  font-weight: 500;
+}
+
+.view-toggle {
+  display: flex;
+  background-color: var(--strip-bg);
+  border: 1px solid var(--border-color);
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-btn.active {
+  background-color: #ffffff;
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Stats strip */
+.stats-strip {
+  background-color: var(--strip-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.stat-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.delete-badge {
+  background-color: rgba(255, 59, 48, 0.08);
+  border: 1px solid rgba(255, 59, 48, 0.15);
+  color: var(--del-text);
+}
+
+.add-badge {
+  background-color: rgba(52, 199, 89, 0.08);
+  border: 1px solid rgba(52, 199, 89, 0.15);
+  color: var(--ins-text);
+}
+
+.change-badge {
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Page Bloat Inspector */
+.bloat-inspector-strip {
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bloat-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.bloat-metrics {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.bloat-metric-item {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bloat-metric-item span {
+  font-weight: 700;
+}
+
+.delta-pct {
+  font-size: 10px;
+  font-weight: 800;
+  margin-left: 3px;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.delta-pct.bloat-up {
+  background-color: rgba(255, 59, 48, 0.08);
+  color: var(--danger-color);
+}
+
+.delta-pct.bloat-down {
+  background-color: rgba(52, 199, 89, 0.08);
+  color: var(--ins-text);
+}
+
+.delta-pct.bloat-same {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--text-secondary);
+}
+
+/* Comparison Viewport */
+.diff-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.diff-view-pane {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.split-pane {
+  flex-direction: row;
+}
+
+.pane-column {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane-column:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.pane-title {
+  background-color: var(--strip-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  padding: 8px 16px;
+  letter-spacing: 0.5px;
+}
+
+.unified-pane {
+  flex-direction: column;
+}
+
+/* Diff Code Blocks Window */
+.diff-code-window {
+  flex: 1;
+  overflow-y: auto;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  background-color: var(--bg-color);
+  padding: 10px 0;
+}
+
+/* Diff line rows styling */
+.diff-line-row {
+  display: flex;
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.line-num {
+  width: 50px;
+  text-align: right;
+  padding-right: 12px;
+  color: var(--text-secondary);
+  user-select: none;
+  background-color: var(--empty-line-bg);
+  border-right: 1px solid var(--border-color);
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.line-content {
+  flex: 1;
+  padding-right: 16px;
+}
+
+/* Deletions row */
+.diff-line-row.deletion {
+  background-color: var(--del-bg);
+  color: var(--del-text);
+}
+.diff-line-row.deletion .line-num {
+  background-color: #fee8eb;
+  border-right-color: #fad0d6;
+}
+
+/* Additions row */
+.diff-line-row.addition {
+  background-color: var(--ins-bg);
+  color: var(--ins-text);
+}
+.diff-line-row.addition .line-num {
+  background-color: #dfeedf;
+  border-right-color: #c3e6c3;
+}
+
+/* Empty placeholder row (to align heights in split views) */
+.diff-line-row.empty-row {
+  background-color: var(--empty-line-bg);
+}
+.diff-line-row.empty-row .line-num {
+  background-color: #f6f8fa;
+}
+
+/* Loading Overlay */
+.diff-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--text-primary);
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+/* Dark Theme Overrides (Feature 5) */
+body.dark-theme {
+  --bg-color: #1e1e1e;
+  --header-bg: #1e1e1e;
+  --strip-bg: #2d2d2d;
+  --border-color: #3a3a3c;
+  --border-dark: #48484a;
+  --text-primary: #f5f5f7;
+  --text-secondary: #8e8e93;
+  --accent-color: #0a84ff;
+  
+  --del-bg: #3d1b1b;
+  --del-text: #ff453a;
+  --ins-bg: #1b3d22;
+  --ins-text: #32d74b;
+  --empty-line-bg: #121212;
+}
+
+/* Layout with Minimap */
+.viewport-layout-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+#view-split, #view-unified {
+  flex: 1;
+}
+
+/* Interactive Minimap Styles (Feature 1) */
+.diff-minimap-sidebar {
+  width: 54px;
+  background-color: var(--strip-bg);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  user-select: none;
+  height: 100%;
+}
+
+.minimap-header {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.minimap-track {
+  width: 38px;
+  height: calc(100% - 24px);
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  overflow-y: hidden;
+  padding: 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.minimap-line-bar {
+  width: calc(100% - 4px);
+  margin: 0 auto;
+  height: 2px;
+  min-height: 2px;
+  border-radius: 1px;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.minimap-line-bar:hover {
+  opacity: 1;
+  transform: scaleY(1.5);
+}
+
+.minimap-line-bar.added {
+  background-color: #34c759;
+}
+
+.minimap-line-bar.deleted {
+  background-color: #ff3b30;
+}
+
+.minimap-line-bar.unchanged {
+  background-color: var(--border-dark);
+  opacity: 0.15;
+}
+
+/* Search input header tool (Feature 2) */
+.search-filter-input {
+  background-color: var(--strip-bg);
+  border: 1px solid var(--border-dark);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  width: 160px;
+  transition: width 0.2s, border-color 0.2s;
+}
+
+.search-filter-input:focus {
+  width: 220px;
+  border-color: var(--accent-color);
+  background-color: var(--bg-color);
+}
+
+/* Diagnostics & Badges */
+.diagnostics-tag {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-left: auto;
+  border-left: 1px solid var(--border-color);
+  padding-left: 12px;
+}
+
+.workspace-btn-icon {
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-primary);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.workspace-btn-icon:hover {
+  background-color: var(--strip-bg);
+  border-color: var(--text-primary);
+}
+
+.block-indicator {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Hide rows during keyword filtering */
+.diff-line-row.filtered-out {
+  display: none !important;
+}
+
+/* Feature 15: Hide line numbers support */
+.diff-code-window.hide-line-numbers .line-num {
+  display: none !important;
+}
+
+.workspace-btn-icon.active {
+  background-color: var(--accent-light);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}

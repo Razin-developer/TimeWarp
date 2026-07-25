@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Time Warp - Diff Inspector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="diffview.css">
+</head>
+<body>
+  <div class="diff-view-container">
+    <!-- Header Area -->
+    <header class="diff-header">
+      <div class="header-left">
+        <svg class="logo-icon" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="6"/>
+          <path d="M44 40L60 64V68L44 88" stroke="currentColor" stroke-width="4"/>
+          <path d="M84 40L68 64V68L84 88" stroke="currentColor" stroke-width="4"/>
+        </svg>
+        <div class="header-title-block">
+          <h2>Diff Inspector</h2>
+          <span id="target-domain" class="target-domain-text">Analyzing page history...</span>
+        </div>
+      </div>
+      
+      <!-- Controls -->
+      <div class="header-right">
+        <div class="header-tools">
+          <!-- Text filter (Feature 2) -->
+          <input type="text" id="diff-search" class="search-filter-input" placeholder="Filter lines by keyword...">
+          
+          <select id="compare-snapshot-select" class="snapshot-select">
+            <option value="">Compare with Year</option>
+          </select>
+          
+          <div class="view-toggle">
+            <button id="btn-split" class="toggle-btn active">Split</button>
+            <button id="btn-unified" class="toggle-btn">Unified</button>
+          </div>
+          
+          <!-- Toggle Line Numbers (Feature 15) -->
+          <button id="btn-toggle-nums" class="workspace-btn-icon" title="Toggle Line Numbers" style="font-weight: 700; font-size: 11px;">#</button>
+          
+          <!-- Dark Mode Button (Feature 5) -->
+          <button id="dark-mode-btn" class="workspace-btn-icon" title="Toggle Dark Theme">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats strip -->
+    <section class="stats-strip">
+      <span class="stat-badge delete-badge">Deletions: <strong id="stat-deletions">0</strong> lines</span>
+      <span class="stat-badge add-badge">Additions: <strong id="stat-additions">0</strong> lines</span>
+      <span class="stat-badge change-badge">Total Changes: <strong id="stat-changes">0</strong> lines</span>
+      
+      <!-- Diagnostics Log (Feature 4) -->
+      <span class="diagnostics-tag" id="diagnostics-log">DB Cache: Scanning local database...</span>
+    </section>
+
+    <!-- Page Bloat Inspector -->
+    <section class="bloat-inspector-strip">
+      <span class="bloat-title">PAGE BLOWUP ANALYSIS:</span>
+      <div class="bloat-metrics">
+        <div class="bloat-metric-item">DOM Nodes: <span id="metric-nodes-live">0</span> vs <span id="metric-nodes-past">0</span> <span id="delta-nodes" class="delta-pct">--</span></div>
+        <div class="bloat-metric-item">Scripts: <span id="metric-scripts-live">0</span> vs <span id="metric-scripts-past">0</span> <span id="delta-scripts" class="delta-pct">--</span></div>
+        <div class="bloat-metric-item">Stylesheets: <span id="metric-styles-live">0</span> vs <span id="metric-styles-past">0</span> <span id="delta-styles" class="delta-pct">--</span></div>
+        <div class="bloat-metric-item">Images: <span id="metric-images-live">0</span> vs <span id="metric-images-past">0</span> <span id="delta-images" class="delta-pct">--</span></div>
+      </div>
+    </section>
+
+    <!-- Comparison Viewport -->
+    <main class="diff-body">
+      <!-- Loading state -->
+      <div id="loading-overlay" class="diff-overlay">
+        <div class="spinner"></div>
+        <p id="loading-text">Analyzing page history copy...</p>
+      </div>
+
+      <!-- Main Layout wrapping Split/Unified View + Interactive Minimap (Feature 1) -->
+      <div class="viewport-layout-wrapper">
+        <!-- Split View -->
+        <div id="view-split" class="diff-view-pane split-pane">
+          <!-- Left: Deletions/Old Page -->
+          <div class="pane-column">
+            <div class="pane-title">
+              <span>Live Webpage (Current)</span>
+              <!-- Block detail indicator (Feature 3) -->
+              <span class="block-indicator" id="left-block-indicator">0 lines total</span>
+            </div>
+            <div class="diff-code-window" id="split-left-lines">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+          <!-- Right: Additions/New Page -->
+          <div class="pane-column">
+            <div class="pane-title" id="archive-pane-title">
+              <span>Archived Wayback (Past)</span>
+              <!-- Block detail indicator (Feature 3) -->
+              <span class="block-indicator" id="right-block-indicator">0 lines total</span>
+            </div>
+            <div class="diff-code-window" id="split-right-lines">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Unified View -->
+        <div id="view-unified" class="diff-view-pane unified-pane hidden">
+          <div class="pane-title">Merged Differences</div>
+          <div class="diff-code-window" id="unified-lines">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Complicated Interactive Diff Minimap (Feature 1) -->
+        <aside class="diff-minimap-sidebar" id="diff-minimap-container" title="Interactive Diff Minimap (Click to scroll)">
+          <div class="minimap-header">MAP</div>
+          <div class="minimap-track" id="diff-minimap-track">
+            <!-- Dynamically populated vertical bars representing lines -->
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- Library Scripts -->
+  <script src="../lib/wayback.js"></script>
+  <script src="../lib/vault.js"></script>
+  <script src="../lib/diff.js"></script>
+  <script src="diffview.js"></script>
+</body>
+</html>

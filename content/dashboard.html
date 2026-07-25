@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Time Warp - Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <svg class="logo-icon" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="64" cy="64" r="56" stroke="#1d1d1f" stroke-width="6"/>
+          <path d="M36 32H92V40H36V32Z" fill="#1d1d1f"/>
+          <path d="M36 88H92V96H36V88Z" fill="#1d1d1f"/>
+          <path d="M44 40L60 64V68L44 88" stroke="#1d1d1f" stroke-width="4"/>
+          <path d="M84 40L68 64V68L84 88" stroke="#1d1d1f" stroke-width="4"/>
+          <path d="M48 46H80L64 62L48 46Z" fill="#86868b"/>
+          <path d="M64 62V82" stroke="#86868b" stroke-width="3"/>
+          <path d="M64 74L48 84H80L64 74Z" fill="#86868b"/>
+        </svg>
+        <h2>Time Warp</h2>
+      </div>
+      
+      <nav class="nav-menu">
+        <button id="nav-bookmarks" class="nav-item active">
+          <span>Bookmarks</span>
+        </button>
+        <button id="nav-history" class="nav-item">
+          <span>Browsing History</span>
+        </button>
+        <button id="nav-monitors" class="nav-item">
+          <span>Warp Alerts & Monitors</span>
+        </button>
+        <button id="nav-stats" class="nav-item">
+          <span>Insights & Stats</span>
+        </button>
+        <button id="nav-backup" class="nav-item">
+          <span>Backup & Data</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <span>v1.1.0 &bull; MV3</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Section 1: Bookmarks -->
+      <section id="section-bookmarks" class="content-section">
+        <header class="section-header">
+          <div>
+            <h1>Bookmarks</h1>
+            <p class="subtitle">Your curated archive of historical moments.</p>
+          </div>
+          <div class="header-actions">
+            <input type="text" id="bookmark-search" class="search-input" placeholder="Filter bookmarks...">
+          </div>
+        </header>
+        
+        <div id="bookmarks-grid" class="bookmarks-grid">
+          <!-- Dynamically populated -->
+        </div>
+        
+        <div id="bookmarks-empty" class="empty-state hidden">
+          <div class="empty-state-icon">⭐</div>
+          <h3>No Bookmarks Yet</h3>
+          <p>Bookmarked snapshots from your side panel will appear here.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: History -->
+      <section id="section-history" class="content-section hidden">
+        <header class="section-header">
+          <div>
+            <h1>Browsing History</h1>
+            <p class="subtitle">A record of your travels across the space-time web.</p>
+          </div>
+          <div class="header-actions">
+            <input type="text" id="history-search" class="search-input" placeholder="Search history...">
+            <button id="clear-history-btn" class="danger-btn">Clear History</button>
+          </div>
+        </header>
+        
+        <div class="table-container">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th style="width: 35%">Website / Domain</th>
+                <th style="width: 35%">Archived Snapshot Date</th>
+                <th style="width: 15%">Date Warped</th>
+                <th style="width: 15%; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="history-rows">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div id="history-empty" class="empty-state hidden">
+          <div class="empty-state-icon">⏳</div>
+          <h3>No Warping History</h3>
+          <p>Sites you visit through the Time Warp Side Panel will show up here.</p>
+        </div>
+      </section>
+
+      <!-- Section 3: Warp Monitors (NEW) -->
+      <section id="section-monitors" class="content-section hidden">
+        <header class="section-header">
+          <div>
+            <h1>Warp Monitors</h1>
+            <p class="subtitle">Automated background checks that query Wayback for new website snapshots.</p>
+          </div>
+        </header>
+
+        <!-- Add Monitor Form Card -->
+        <div class="monitor-add-card">
+          <h3>Add Website to Watchlist</h3>
+          <form id="add-monitor-form" class="monitor-form">
+            <input type="url" id="monitor-url-input" placeholder="Enter URL (https://example.com)" required>
+            <select id="monitor-freq-select" required>
+              <option value="60">Hourly</option>
+              <option value="240" selected>Every 4 Hours</option>
+              <option value="1440">Daily</option>
+              <option value="10080">Weekly</option>
+            </select>
+            <button type="submit" class="action-btn-primary">Watch Page</button>
+          </form>
+        </div>
+
+        <div class="table-container" style="margin-top: 24px;">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th style="width: 45%">Monitored Webpage</th>
+                <th style="width: 20%">Check Frequency</th>
+                <th style="width: 20%">Last Checked</th>
+                <th style="width: 15%; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="monitor-rows">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="monitors-empty" class="empty-state hidden">
+          <div class="empty-state-icon">🔔</div>
+          <h3>No Active Monitors</h3>
+          <p>Add a URL above to monitor it in the background for new archived versions.</p>
+        </div>
+      </section>
+
+      <!-- Section 4: Insights & Stats -->
+      <section id="section-stats" class="content-section hidden">
+        <header class="section-header">
+          <div>
+            <h1>Insights & Stats</h1>
+            <p class="subtitle">Analytical breakdown of your time warping activity.</p>
+          </div>
+        </header>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">TOTAL TIME WARPS</span>
+            <h2 id="stat-total-warps">0</h2>
+            <p class="stat-desc">Total archives loaded in Side Panel</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">UNIQUE DOMAINS VISITED</span>
+            <h2 id="stat-unique-domains">0</h2>
+            <p class="stat-desc">Different websites researched</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">TOTAL BOOKMARKS</span>
+            <h2 id="stat-total-bookmarks">0</h2>
+            <p class="stat-desc">Saved historical page states</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">OLDEST SNAPSHOT EXPLORED</span>
+            <h2 id="stat-oldest-snapshot">----</h2>
+            <p class="stat-desc">Earliest year loaded from the archive</p>
+          </div>
+        </div>
+
+        <!-- Snapshots Calendar Density heat map bar chart -->
+        <div class="stat-list-card" style="margin-bottom: 24px;">
+          <h3>Timeline Snapshot Activity Chart</h3>
+          <p class="subtitle" style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Density of archive explorers distributed over timeline years.</p>
+          <div class="heatmap-chart-wrapper" id="svg-chart-container">
+            <!-- SVG chart generated dynamically -->
+          </div>
+        </div>
+
+        <div class="stats-lists-container">
+          <div class="stat-list-card">
+            <h3>Top Warped Websites</h3>
+            <ul id="top-domains-list" class="stat-list">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Backup & Data -->
+      <section id="section-backup" class="content-section hidden">
+        <header class="section-header">
+          <div>
+            <h1>Backup & Data</h1>
+            <p class="subtitle">Export, import, or manage your stored settings and snapshots.</p>
+          </div>
+        </header>
+        
+        <div class="data-management-grid">
+          <div class="management-card">
+            <h3>Export Configuration</h3>
+            <p>Save your bookmarked timestamps and warping history to local files. You can export as JSON or a CSV checklist.</p>
+            <div style="display:flex; gap:10px;">
+              <button id="export-data-btn" class="action-btn" style="flex: 1;">Export JSON</button>
+              <button id="export-csv-btn" class="action-btn" style="flex: 1;">Export CSV</button>
+            </div>
+          </div>
+          
+          <div class="management-card">
+            <h3>Import Configuration</h3>
+            <p>Upload a previously exported Time Warp JSON file to restore your bookmarks and history.</p>
+            <div class="file-upload-wrapper">
+              <label for="import-file-input" class="file-upload-label">
+                <span>Choose JSON File</span>
+                <input type="file" id="import-file-input" accept=".json" class="hidden">
+              </label>
+              <span id="import-status-text" class="status-msg">No file chosen</span>
+            </div>
+            <button id="import-data-btn" class="action-btn" disabled>Import Data</button>
+          </div>
+
+          <div class="management-card danger-card">
+            <h3>Reset & Maintenance</h3>
+            <p>Delete all bookmarks, erase all history, and clear the search cache. Or clear offline HTML archives cache to free disk space.</p>
+            <div style="display:flex; gap:10px;">
+              <button id="clear-cache-btn" class="action-btn" style="flex:1; border-color:var(--border-dark);">Clear Cache</button>
+              <button id="reset-all-btn" class="danger-btn" style="flex:1;">Reset All Data</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Library Scripts -->
+  <script src="../lib/wayback.js"></script>
+  <script src="../lib/cache.js"></script>
+  <script src="../lib/vault.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

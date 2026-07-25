@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Time Warp - Multi-Window Grid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="multiwarp.css">
+</head>
+<body>
+  <div class="grid-layout-container">
+    <!-- Header control bar -->
+    <header class="grid-header">
+      <div class="header-left">
+        <a href="dashboard.html" class="back-link">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <h1>Multi-Warp Sync Grid</h1>
+      </div>
+      <div class="header-center">
+        <span id="target-domain" class="target-url-text">Loading site history...</span>
+      </div>
+      <div class="header-right">
+        <span class="sync-badge">
+          <span class="sync-dot"></span>
+          Scroll Synchronized
+        </span>
+      </div>
+    </header>
+
+    <!-- 2x2 synclink frame layout -->
+    <main class="grid-body">
+      <!-- Grid Cell 1 -->
+      <div class="grid-cell" id="cell-0">
+        <div class="cell-toolbar">
+          <span class="cell-label">Warp Window A</span>
+          <select class="year-select" id="select-0">
+            <option value="">Select snapshot</option>
+          </select>
+        </div>
+        <div class="cell-viewport">
+          <iframe id="iframe-0" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+          <div class="cell-overlay" id="overlay-0">Select a snapshot to begin</div>
+        </div>
+      </div>
+
+      <!-- Grid Cell 2 -->
+      <div class="grid-cell" id="cell-1">
+        <div class="cell-toolbar">
+          <span class="cell-label">Warp Window B</span>
+          <select class="year-select" id="select-1">
+            <option value="">Select snapshot</option>
+          </select>
+        </div>
+        <div class="cell-viewport">
+          <iframe id="iframe-1" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+          <div class="cell-overlay" id="overlay-1">Select a snapshot to begin</div>
+        </div>
+      </div>
+
+      <!-- Grid Cell 3 -->
+      <div class="grid-cell" id="cell-2">
+        <div class="cell-toolbar">
+          <span class="cell-label">Warp Window C</span>
+          <select class="year-select" id="select-2">
+            <option value="">Select snapshot</option>
+          </select>
+        </div>
+        <div class="cell-viewport">
+          <iframe id="iframe-2" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+          <div class="cell-overlay" id="overlay-2">Select a snapshot to begin</div>
+        </div>
+      </div>
+
+      <!-- Grid Cell 4 -->
+      <div class="grid-cell" id="cell-3">
+        <div class="cell-toolbar">
+          <span class="cell-label">Warp Window D</span>
+          <select class="year-select" id="select-3">
+            <option value="">Select snapshot</option>
+          </select>
+        </div>
+        <div class="cell-viewport">
+          <iframe id="iframe-3" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+          <div class="cell-overlay" id="overlay-3">Select a snapshot to begin</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../lib/wayback.js"></script>
+  <script src="../lib/cache.js"></script>
+  <script src="multiwarp.js"></script>
+</body>
+</html>
