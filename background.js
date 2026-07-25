@@ -27,8 +27,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         await WaybackCache.setSnapshots(url, snapshots);
         sendResponse({ success: true, snapshots, cached: false });
       } catch (error) {
-        console.error('Background fetch snapshots error:', error);
-        sendResponse({ success: false, error: error.message });
+        if (error.name === 'AbortError') {
+          console.warn('Background fetch snapshots timed out/aborted:', error.message);
+        } else {
+          console.warn('Background fetch snapshots error:', error.message);
+        }
+        sendResponse({ success: false, error: error.message || 'Snapshot request timed out' });
       }
     })();
     
@@ -123,7 +127,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           // Download if not in database cache
           const response = await fetch(url);
           if (!response.ok) {
-            throw new Error(`Failed to load archive: ${response.statusText}`);
+            const statusDetail = response.statusText ? ` ${response.statusText}` : '';
+            throw new Error(`Failed to load archive (${response.status}${statusDetail})`);
           }
           const text = await response.text();
           
@@ -136,12 +141,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // 2. Normal direct fetch for non-archive URLs
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error(`Failed to load URL: ${response.statusText}`);
+          const statusDetail = response.statusText ? ` ${response.statusText}` : '';
+          throw new Error(`Failed to load URL (${response.status}${statusDetail})`);
         }
         const text = await response.text();
         sendResponse({ success: true, html: text, cached: false });
       } catch (error) {
-        console.error('Error fetching raw HTML in background:', error);
+        if (error.name === 'AbortError') {
+          console.warn('Fetching raw HTML aborted:', error.message);
+        } else {
+          console.warn('Error fetching raw HTML in background:', error.message);
+        }
         sendResponse({ success: false, error: error.message });
       }
     })();
@@ -167,18 +177,21 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
   
   // Proactive pre-fetching when page loading completes
-  if (changeInfo.status === 'complete' && tab.url) {
-    preFetchUrlSnapshots(tab.url);
+  if (changeInfo.status === 'complete' && tab && tab.url) {
+    // Only pre-fetch for standard web pages, ignoring web.archive.org and extension pages
+    if ((tab.url.startsWith('http://') || tab.url.startsWith('https://')) && !tab.url.includes('web.archive.org')) {
+      preFetchUrlSnapshots(tab.url);
+    }
   }
 });
 
 /**
  * Proactively fetches and caches snapshots for a URL in the background.
- * Pre-warms key milestones (oldest, newest, and intermediate snapshots)
- * in parallel for instant, sub-10ms loads when requested.
+ * Pre-warms key milestones (oldest and newest snapshot) sequentially with throttling
+ * to avoid overloading archive.org.
  */
 async function preFetchUrlSnapshots(url) {
-  if (url.startsWith('chrome://') || url.startsWith('chrome-extension://') || url.startsWith('about:')) {
+  if (!url || (!url.startsWith('http://') && !url.startsWith('https://')) || url.includes('web.archive.org')) {
     return;
   }
   try {
@@ -191,39 +204,35 @@ async function preFetchUrlSnapshots(url) {
     
     if (!snapshots || snapshots.length === 0) return;
     
-    // 2. Select milestones to pre-warm (up to 5 snapshots)
-    const milestones = [];
-    const len = snapshots.length;
-    
-    milestones.push(snapshots[0]); // Oldest
-    if (len > 1) milestones.push(snapshots[len - 1]); // Newest
-    if (len > 2) milestones.push(snapshots[Math.floor(len / 2)]); // Midpoint
-    if (len > 4) {
-      milestones.push(snapshots[Math.floor(len / 4)]);
-      milestones.push(snapshots[Math.floor(len * 3 / 4)]);
+    // 2. Select milestones to pre-warm (oldest and newest)
+    const milestones = [snapshots[0]];
+    if (snapshots.length > 1) {
+      milestones.push(snapshots[snapshots.length - 1]);
     }
     
-    // De-duplicate milestones
     const uniqueMilestones = [...new Set(milestones)];
     
-    // 3. Parallel fetch and store in database cache
-    uniqueMilestones.forEach(async (timestamp) => {
+    // 3. Sequentially pre-fetch milestones with timeout and throttling
+    for (const timestamp of uniqueMilestones) {
       try {
         const cachedHtml = await WaybackVault.getOfflineSnapshot(url, timestamp);
         if (!cachedHtml) {
           const archiveUrl = WaybackAPI.getArchiveUrl(url, timestamp);
-          const response = await fetch(archiveUrl);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(new Error('Pre-fetch timed out')), 10000);
+          const response = await fetch(archiveUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
           if (response.ok) {
             const html = await response.text();
             await WaybackVault.saveOfflineSnapshot(url, timestamp, html);
           }
         }
       } catch (err) {
-        // Suppress background errors
+        // Suppress background pre-fetch errors silently
       }
-    });
+    }
   } catch (err) {
-    // Suppress background errors
+    // Suppress background pre-fetch errors silently
   }
 }
 

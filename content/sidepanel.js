@@ -617,14 +617,13 @@ async function preWarmSnapshotHtml(url, timestamp, signal) {
     if (response.ok) {
       const html = await response.text();
       await WaybackVault.saveOfflineSnapshot(url, timestamp, html);
-      console.log(`Speculative cache warmed: ${timestamp}`);
     }
   } catch (err) {
     if (err.name === 'AbortError') {
-      console.log(`Preloading aborted for snapshot: ${timestamp}`);
-    } else {
-      console.error('Preloading failed:', err);
+      // Intentionally aborted during slider scrubbing
+      return;
     }
+    console.warn('Preloading snapshot failed:', err.message);
   }
 }
 
