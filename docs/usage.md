@@ -1,17 +1,18 @@
-# user guide for timewarp
+# user guide
 
-quick guide on how to use the buttons in case u loaded the extension and got confused.
+overview of controls and features in the timewarp sidepanel.
 
-watch the video demo:
-![explain-video.mp4](../explain-video.mp4)
+demo video:
+![demo video](../explain-video.mp4)
 <video src="../explain-video.mp4" controls width="100%"></video>
 
-live site: https://timewarp-nine.vercel.app
+app link: https://timewarp-ruddy.vercel.app
 
-### how to use it
-1. click the timewarp extension icon while visiting any site to pop open the sidepanel
-2. drag the bottom slider to scrub back in time to older snapshot dates
-3. press the play button to watch it cycle month by month automatically
-4. click the diff grid button to see split view code comparisons with line highlights and a scrollable minimap
-5. hit the star icon to bookmark dates with custom tags
-6. click the QR code button if u wanna open the page on your phone camera
+### basic controls
+
+* **opening panel**: click the extension icon on any active tab to open the sidepanel on the right.
+* **scrubbing time**: drag the bottom timeline bar to jump between archived snapshots.
+* **playback**: click play to step through history month by month.
+* **diff tool**: open the diff viewer to compare live pages with past snapshots. line additions show in green, removals in red, with a minimap on the right edge for quick scrolling.
+* **bookmarks**: save snapshots with custom tags for quick retrieval later.
+* **qr code**: generate a QR code to view the wayback URL on a phone.

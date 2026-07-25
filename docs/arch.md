@@ -1,14 +1,15 @@
-# timewarp architecture notes
+# architecture notes
 
-here is a breakdown of how the background scripts work.
+internal layout of background scripts and state handling.
 
-video demo:
-![explain-video.mp4](../explain-video.mp4)
+demo video:
+![demo video](../explain-video.mp4)
 <video src="../explain-video.mp4" controls width="100%"></video>
 
-live site: https://timewarp-nine.vercel.app
+app link: https://timewarp-ruddy.vercel.app
 
-### how it works
-1. **background.js**: fetches snapshots from wayback machine API and strips X-Frame-Options headers so wayback pages can load inside the iframe without getting blocked by chrome. it also pre-loads 5 dates in advance so switching feels instant.
-2. **lib/vault.js**: uses indexedDB to store cached pages. added gzip compression so the pages don't take up all your disk space.
-3. **lib/diff.js**: compares HTML code. trims matching prefixes and suffixes first so it only processes lines that actually changed, which cut the diff calculation time from 500ms to ~2ms.
+### components
+
+* **background.js**: handles requests to wayback machine CDX API, strips `X-Frame-Options` response headers to allow embedding inside the sidepanel iframe, and pre-fetches key snapshot dates.
+* **lib/vault.js**: stores downloaded pages in indexedDB with gzip compression to avoid browser storage limits.
+* **lib/diff.js**: computes HTML diffs. pre-filters identical prefix and suffix lines before running diff matching to keep execution times under ~2ms.

@@ -1,29 +1,28 @@
 # timewarp
 
-yo so basically i got super bored last week during summer break and decided to code a chrome extension called timewarp. it lets u inspect old versions of any website using the wayback machine API directly inside a sidepanel instead of opening 50 tabs and freezing your laptop. 
+a chrome extension for scrubbing through internet history straight from your browser sidepanel. 
 
-i also deployed the official site on vercel: https://timewarp-nine.vercel.app
+web app: https://timewarp-ruddy.vercel.app
 
-here is a video of me clicking around testing the features:
-
-![explain-video.mp4](explain-video.mp4)
+![demo video](explain-video.mp4)
 <video src="explain-video.mp4" controls width="100%"></video>
 
-(if github breaks the video embed just click explain-video.mp4 up in the repo files)
+i got annoyed with opening wayback machine in 50 separate browser tabs, so i put together timewarp. it hooks directly into wayback's CDX API and renders past snapshots in an iframe right beside whatever page you're currently browsing.
 
-### cool stuff it can do
-- timeline slider at the bottom so u can scrub back to like 2009 YouTube or old Roblox layout
-- month by month autoplay so u can just watch site designs evolve like a movie
-- side-by-side diff viewer with a minimap so u can see exact line changes in the HTML code (red for deleted green for added)
-- bookmarking dates with tags like #nostalgia
-- generates QR codes if u wanna open the wayback page on your phone
-- cached everything with indexeddb + gzip so stuff loads pretty much instantly without lagging
+### features
 
-### documentation i wrote
-if u wanna try running it or look at the code i wrote a few markdown files in the docs folder:
-- [docs/dev.md](docs/dev.md) - guide for setting it up in developer mode on chrome
-- [docs/usage.md](docs/usage.md) - breakdown of what the UI buttons do 
-- [docs/arch.md](docs/arch.md) - how the background script and database talk to each other
-- [apps/web/README.md](apps/web/README.md) - next.js site info
+* timeline slider at the bottom of the panel for dragging back to older captures (2008, 2012, etc)
+* autoplay mode that steps month-by-month through website history like a video
+* diff inspector tab showing side-by-side HTML comparisons (added/deleted tags) alongside a visual minimap
+* bookmarking system with custom tag filtering (#retro, #layout)
+* QR code popup so you can send archived pages to your phone
+* local indexeddb storage + gzip compression to keep cached HTML sizes tiny
 
-my mom said i spent too much time on this instead of going outside lol. feel free to fork it or use the code just dont steal the whole thing without crediting me!
+### docs
+
+* [installation & dev mode](docs/dev.md)
+* [how to use the UI](docs/usage.md)
+* [architecture & cache design](docs/arch.md)
+* [landing page web app](apps/web/README.md)
+
+licensed under MIT / free to use or modify.

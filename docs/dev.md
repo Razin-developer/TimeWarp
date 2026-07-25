@@ -1,25 +1,24 @@
-# local dev setup for timewarp
+# developer setup
 
-whats up if u wanna test timewarp on your PC or edit the code here is how to do it. i tried to make it as simple as possible.
+instructions for running timewarp locally as an unpacked extension.
 
-check out the demo clip first:
-![explain-video.mp4](../explain-video.mp4)
+demo video:
+![demo video](../explain-video.mp4)
 <video src="../explain-video.mp4" controls width="100%"></video>
 
-also live site link: https://timewarp-nine.vercel.app
+app link: https://timewarp-ruddy.vercel.app
 
 ### requirements
-- google chrome or brave (dont use edge lol)
-- vs code
-- git
+you just need google chrome (or another chromium browser like brave) and git.
 
-### steps
-1. clone the repo or download the zip:
+### loading into chrome
+
+1. clone the repository:
 ```bash
 git clone https://github.com/Razin-developer/TimeWarp.git
 ```
-2. open chrome and go to `chrome://extensions`
-3. toggle on **Developer mode** at the top right
-4. click **Load unpacked** and pick the folder where `manifest.json` is located
+2. open `chrome://extensions` in your address bar.
+3. flip the **Developer mode** switch in the top-right corner.
+4. click **Load unpacked** and select the folder containing `manifest.json`.
 
-now the extension icon should show up in your extension list! if u change any javascript files make sure u click the little reload icon on the extension card so chrome loads the new code.
+if you edit `background.js` or scripts inside `lib/`, click the refresh icon on the extension card in `chrome://extensions` to reload the background page.
