@@ -1,23 +1,15 @@
-# Time Warp Web Landing App 🌐⚡
+# timewarp web app
 
-whats up! this is the Next.js web application for Time Warp!! 
+this is the Next.js web application for timewarp deployed on Vercel.
 
-## 🎥 DEMO VIDEO FOOTAGE (explain-video.mp4)
-Check out the extension demo video clip:
+live site: https://timewarp-nine.vercel.app
 
-![Time Warp Demo](../../explain-video.mp4)
-
+video demo clip:
+![explain-video.mp4](../../explain-video.mp4)
 <video src="../../explain-video.mp4" controls width="100%"></video>
 
----
-
-## 🚀 How to run local web server:
-
+### local development
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) in ur browser to see the landing page!
-
-## 📦 Deployment
-This app is ready to deploy on **Vercel** with zero setup needed!
+open http://localhost:3000 in your browser.

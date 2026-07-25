@@ -1,33 +1,25 @@
-# how to run this on your computer (local dev)
+# local dev setup for timewarp
 
-sup so you wanna change my code or run it locally? cool. here is how you do it step by step. its realy easy i promise.
+whats up if u wanna test timewarp on your PC or edit the code here is how to do it. i tried to make it as simple as possible.
 
-## what you need
-- a web browser (like google chrome or brave, dont use edge lol)
-- a text editor (i use vs code because the dark mode looks cool)
-- git installed (or you can just download the zip file from github if you dont know git)
+check out the demo clip first:
+![explain-video.mp4](../explain-video.mp4)
+<video src="../explain-video.mp4" controls width="100%"></video>
 
-## step 1: get the code
-open your terminal or cmd and run this command:
+also live site link: https://timewarp-nine.vercel.app
+
+### requirements
+- google chrome or brave (dont use edge lol)
+- vs code
+- git
+
+### steps
+1. clone the repo or download the zip:
 ```bash
-git clone https://github.com/your-username/time-warp.git
+git clone https://github.com/Razin-developer/TimeWarp.git
 ```
-or just click the green "Code" button on github and select "Download ZIP" then extract it.
+2. open chrome and go to `chrome://extensions`
+3. toggle on **Developer mode** at the top right
+4. click **Load unpacked** and pick the folder where `manifest.json` is located
 
-## step 2: load it into chrome
-since we dont have a chrome web store license (cuz it costs $5 and my mom wont give me her credit card), we have to load it as an "unpacked extension".
-1. open google chrome.
-2. type `chrome://extensions` in the address bar and press enter.
-3. turn on the **Developer mode** toggle in the top right corner! (very important!)
-4. click the **Load unpacked** button in the top left.
-5. select the folder where the code is (the folder containing `manifest.json`).
-
-BOOM. now you should see the "Time Warp" icon in your extensions list!
-
-## step 3: editing the code
-if you wanna change how things look:
-- the sidepanel stuff is in `content/sidepanel.html` and `content/sidepanel.js`.
-- if you change javascript files, you MUST click the little reload arrow icon on the Time Warp card inside `chrome://extensions` so chrome updates it.
-- if you change css, sometimes it updates automatically but just click reload anyway to be safe.
-
-if the extension breaks and nothing works, right click the icon, click "Inspect" or open the background page console to see the errors.
+now the extension icon should show up in your extension list! if u change any javascript files make sure u click the little reload icon on the extension card so chrome loads the new code.
